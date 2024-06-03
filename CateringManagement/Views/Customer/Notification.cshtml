@@ -1,0 +1,40 @@
+﻿@model CateringManagement.Models.Customer
+@{
+    ViewData["Title"] = "Notification Email";
+}
+
+<h1>Marketing Email</h1>
+
+<h2>Message to Customers </h2>
+
+<hr />
+<form asp-action="Notification">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="text-danger">@ViewData["Message"]</div>
+            <hr />
+           @*  <input type="hidden" name="id" value="@ViewData["id"]" /> *@
+            <label class="control-label">Select a Customer</label>
+            <select id="EmailID" name="EmailID" class="form-control" asp-items="ViewBag.EmailID">
+                <option value="">Select a user</option>
+            </select>
+            <div class="form-group">
+                <label for="Subject" class="control-label">Email Subject</label>
+                <input type="text" id="Subject" name="Subject" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="emailContent" class="control-label">Message Content</label>
+                <textarea id="emailContent" name="emailContent" rows="5" cols="40" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+            
+
+        </div>
+    </div>
+</form>
+<div>
+    <partial name="_BackToList" />
+</div>
+

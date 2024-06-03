@@ -1,0 +1,222 @@
+﻿@model CateringManagement.Models.Function
+
+<partial name="_ViewHeading" />
+
+<hr />
+<partial name="_addMealTypeModal" />
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LobbySign" class="control-label"></label>
+                <input asp-for="LobbySign" class="form-control" />
+                <span asp-validation-for="LobbySign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerID" class="control-label"></label>
+                <select asp-for="CustomerID" class="form-control" asp-items="ViewBag.CustomerID">
+                    <option value="">Select a Customer</option>
+                </select>
+                <span asp-validation-for="CustomerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SetupNotes" class="control-label"></label>
+                <textarea asp-for="SetupNotes" rows="5" class="form-control"></textarea>
+                <span asp-validation-for="SetupNotes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="BaseCharge" class="control-label"></label>
+                <input asp-for="BaseCharge" class="form-control" />
+                <span asp-validation-for="BaseCharge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PerPersonCharge" class="control-label"></label>
+                <input asp-for="PerPersonCharge" class="form-control" />
+                <span asp-validation-for="PerPersonCharge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GuaranteedNumber" class="control-label"></label>
+                <input asp-for="GuaranteedNumber" class="form-control" />
+                <span asp-validation-for="GuaranteedNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SOCAN" class="control-label"></label>
+                <input asp-for="SOCAN" class="form-control" />
+                <span asp-validation-for="SOCAN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Deposit" class="control-label"></label>
+                <input asp-for="Deposit" class="form-control" />
+                <span asp-validation-for="Deposit" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Alcohol" /> @Html.DisplayNameFor(model => model.Alcohol)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DepositPaid" /> @Html.DisplayNameFor(model => model.DepositPaid)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="NoHST" /> @Html.DisplayNameFor(model => model.NoHST)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="NoGratuity" /> @Html.DisplayNameFor(model => model.NoGratuity)
+                </label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label custom-file-label">Upload Documents:</label>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" name="theFiles" multiple="multiple">
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="FunctionTypeID" class="control-label"></label>
+                <select asp-for="FunctionTypeID" class="form-control" asp-items="ViewBag.FunctionTypeID">
+                    <option value="">Select a Function Type</option>
+                </select>
+                <span asp-validation-for="FunctionTypeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MealTypeID" class="control-label"></label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" id="nowAddMealType" data-bs-toggle="modal" data-bs-target="#addMealTypeModal" type="button">&#x2795;</button>
+                    </div>
+                    <select asp-for="MealTypeID" class="form-control" asp-items="ViewBag.MealTypeID">
+                        <option value="">No Food Service</option>
+                    </select>
+                    <span asp-validation-for="MealTypeID" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Html.DisplayNameFor(model => model.FunctionRooms)</label>
+                <div class="m-2">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<CateringManagement.ViewModels.CheckOptionVM> checkboxes = ViewBag.RoomOptions;
+                                foreach (var checkbox in checkboxes)
+                                {
+                                    if (cnt++ % 1 == 0)
+                                    {
+                                    @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedOptions"
+                                               value="@checkbox.ID"
+                                               @(Html.Raw(checkbox.Assigned ? "checked=\"checked\"" : "")) />
+                                        @checkbox.DisplayText @:&nbsp;&nbsp;
+                                    @:</td>
+                                }
+                            @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <partial name="_BackToList" />
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/refreshDDL.js"></script>
+    <script type="text/javascript">
+        $('#submitMealTypeCreate').click(function (event) {
+            event.preventDefault();
+            ClearErrors();
+            var form = $('#createMealTypeForm');
+            if (form.valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function () {
+                        $('#addMealTypeModal').modal('hide');
+                    },
+                    error: function (xhr) { //Note: xhr is the XMLHttpRequest
+                        var errorMessages = []; 
+                        switch (xhr.status) {
+                            case 401:
+                                errorMessages.push("You must be logged in first.");
+                                break;
+                            case 403:
+                                errorMessages.push("You are not authorized for this action.");
+                                break;
+                            default:
+                                //Messages coming from the Model State Errors
+                                //We split on the | delimeter and the .slice removes the last one
+                                errorMessages = xhr.responseText.split("|").slice(0, -1);
+                        }
+                        //This checks if there are any elements with some content
+                        //and if not then it provides a default feedback message.
+                        if (!errorMessages.some((str) => str !== "")) {
+                          errorMessages.push("Error: Unable to complete operation");
+                        }
+                        //Put the messages in the ErrorList ul contained in the 'ValidaitonSummary' div.
+                        var ul = document.getElementById("ErrorList");
+                        for (var i = 0; i < errorMessages.length; i++) {
+                          var errorMessage = errorMessages[i];
+                          var li = document.createElement("li");
+                          li.innerHTML = errorMessage;
+                          ul.appendChild(li);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $('#addMealTypeModal').on('hide.bs.modal', function () {
+            document.getElementById("createMealTypeForm").reset();//to clear the data in the popup form
+            ClearErrors();
+            var selectedOption = $('#MealTypeID').val();//Return to the current selected value
+            refreshDDL('MealTypeID', '/Function/GetMealTypes/' + selectedOption, false, null, true, 'None', true);
+        });
+        function ClearErrors() {
+            //Empty out the list of validation errors if there are any
+            var ul = document.getElementById("ErrorList");
+            while (ul.firstChild) {
+              ul.removeChild(ul.firstChild);
+            }
+        }
+    </script>
+
+}
